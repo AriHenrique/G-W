@@ -5,7 +5,11 @@ import pandas as pd
 
 
 class InterfaceGrafica:
+    """
+    Classe para criar a interface gráfica da aplicação.
+    """
     def __init__(self, root):
+
         self.root = root
         self.root.title("Carregar/Salvar Dados")
         self.root.geometry("400x200")
@@ -48,7 +52,7 @@ class InterfaceGrafica:
         self.mensagem_var.set("Erro: " + mensagem)
 
 
-def carregar_dados_para_banco(arquivo_xlsx):
+def carregar_dados_para_banco(arquivo_xlsx: str):
     conn_string = r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\SHARMAQ\SHOficina\dados.mdb;'
     conn = pyodbc.connect(conn_string)
     cursor = conn.cursor()
@@ -71,7 +75,7 @@ def carregar_dados_para_banco(arquivo_xlsx):
                                      f"Apenas números inteiros ou separados por vírgula são aceitos.")
                     exit()
             if row_count:
-                update_query = "UPDATE SERVICOS SET VALOR = ?, COMISSAO = ?, CUSTO_UNT = ? WHERE DESCRICAO = ? AND GRUPO = ?"
+                update_query = 'UPDATE SERVICOS SET VALOR = ?, COMISSAO = ?, CUSTO_UNT = ? WHERE DESCRICAO = ? AND GRUPO = ?'
                 update_values = (float(row['VALOR'])
                                  , float(row['COMISSAO'])
                                  , float(row['CUSTO_UNT'])
@@ -80,7 +84,7 @@ def carregar_dados_para_banco(arquivo_xlsx):
                                  )
                 cursor.execute(update_query, update_values)
             else:
-                insert_query = "INSERT INTO SERVICOS (DESCRICAO, VALOR, COMISSAO, GRUPO, CUSTO_UNT) VALUES (?, ?, ?, ?, ?)"
+                insert_query = 'INSERT INTO SERVICOS (DESCRICAO, VALOR, COMISSAO, GRUPO, CUSTO_UNT) VALUES (?, ?, ?, ?, ?)'
                 insert_values = (
                     row['DESCRICAO']
                     , float(row['VALOR'])
@@ -95,7 +99,7 @@ def carregar_dados_para_banco(arquivo_xlsx):
     conn.close()
 
 
-def carregar_dados_para_planilha(pasta_destino):
+def carregar_dados_para_planilha(pasta_destino: str):
     conn_string = r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};DBQ=C:\SHARMAQ\SHOficina\dados.mdb;'
     conn = pyodbc.connect(conn_string)
     cursor = conn.cursor()
